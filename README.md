@@ -1,1 +1,8 @@
-# StreamingData
+# Theoretical Models of Human-Machine Interaction in Streaming Analysis Contexts
+
+Recent research introduced a <a href="http://hcjournal.org/ojs/index.php?journal=jhc&amp;page=article&amp;op=download&amp;path%5B%5D=25&amp;path%5B%5D=6" target="_blank">simple model</a> for characterizing and quantifying the use of human processing power as part of an algorithmic process. This work provided a critical first step in measuring human involvement in computational processes, and helped us to better understand the intricate relationships among different problems through the lens of human computation. That said, this preliminary model characterizes only a small set of constrained, offline problems and relies on the simplicity of the problem to serve as a bound on the human's required resources. Because of this, it isn't as useful when applied to more complex, streaming applications.</p> 
+      
+In order to better understand how to balance human and machine effort in online
+computation, we'll need to extend these models to quantify and reason about the computation being done in more complex reasoning tasks on streaming data. In this project, we'll conduct web-based experiments using actual streaming applications in which various components are manipulated (stream volume, sampling rate, etc.), and then we'll compare participants' performance with the predictions made by the model.
+
+Through this research, we hope to gain insight about issues unique to streaming analysis and to promote wider understanding of human effort as a legitimate and measurable computational resource. This research is funded in part by the <a href="http://aim.pnnl.gov/" target="_blank">Analysis in Motion Initiative</a> at <a href="http://www.pnnl.gov/" target="_blank">Pacific Northwest National Laboratory</a>.
