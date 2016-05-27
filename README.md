@@ -1,8 +1,84 @@
-# Theoretical Models of Human-Machine Interaction in Streaming Analysis Contexts
+<img src="https://raw.github.com/codementum/experimentr/master/experimentr-logo.png" title="Experimentr" alt="Experimentr" />
+========
 
-Recent research introduced a <a href="http://hcjournal.org/ojs/index.php?journal=jhc&amp;page=article&amp;op=download&amp;path%5B%5D=25&amp;path%5B%5D=6" target="_blank">simple model</a> for characterizing and quantifying the use of human processing power as part of an algorithmic process. This work provided a critical first step in measuring human involvement in computational processes, and helped us to better understand the intricate relationships among different problems through the lens of human computation. That said, this preliminary model characterizes only a small set of constrained, offline problems and relies on the simplicity of the problem to serve as a bound on the human's required resources. Because of this, it isn't as useful when applied to more complex, streaming applications.</p> 
-      
-In order to better understand how to balance human and machine effort in online
-computation, we'll need to extend these models to quantify and reason about the computation being done in more complex reasoning tasks on streaming data. In this project, we'll conduct web-based experiments using actual streaming applications in which various components are manipulated (stream volume, sampling rate, etc.), and then we'll compare participants' performance with the predictions made by the model.
+Experimentr is a hosting/data-collection backend and module-based frontend for web-based visualization studies.
 
-Through this research, we hope to gain insight about issues unique to streaming analysis and to promote wider understanding of human effort as a legitimate and measurable computational resource. This research is funded in part by the <a href="http://aim.pnnl.gov/" target="_blank">Analysis in Motion Initiative</a> at <a href="http://www.pnnl.gov/" target="_blank">Pacific Northwest National Laboratory</a>.
+This repo is a working experiment. The best way to get started is to copy this repo and edit it for your experiment.
+
+Experimentr.js
+-------
+
+Experimentr.js is a front-end framework for experiments.
+
+Experiment stages are defined in modules.
+Modules consist of a small amount of HTML and Javascript and correspond to one stage of the experiment (such as a post-test).
+
+Experimentr.js also contains several helper functions for experiments, such as timing.
+[Check the source](https://github.com/codementum/experimentr/blob/master/public/experimentr.js) for more.
+
+Modules
+-------
+Experiment modules are defined in `public/modules`.
+Here is [an example questionnaire module](https://github.com/codementum/experimentr/blob/master/public/modules/nasa-tlx/).
+
+Modules will be loaded in order using the `experimentr.sequence()` function:
+
+    experimentr.sequence([
+      'modules/consent',
+      'modules/self-assessment-manikin',
+      'modules/emotion-prime-story',
+      'modules/demographics',
+      'modules/nasa-tlx'
+    ]).start();
+
+In some modules the Next button is not needed, so it can be hidden and shown via `experimentr.hideNext()` and `experimentr.showNext()`.
+
+Each module must be unique and cannot be loaded twice in experimentr.sequence().
+For example, if you use the same questionnaire as a pre-test and post-test, the same questionnaire HTML must appear in two uniquely named files. 
+
+For example modules, please see [public/modules/](https://github.com/codementum/experimentr/blob/master/public/modules/). 
+
+How Experimentr Works
+---
+Once experimentr.js loads, it creates a div in `<body>`: `<div id="experimentr">`.
+Experimentr then adds three elements to the page:
+
+- ``#experimentr` div: to hold the module and controls
+- ``#module` div: holds module content
+- ``#control` div: holds controls for the modules
+
+Running the server
+--------
+
+Start redis:
+
+    redis-server redis.conf
+
+Run the server:
+
+    node app.js
+
+Then access the page at [localhost:8000](http://localhost:8000).
+
+Installation
+-------
+## Before-Clone Installation Dependencies:
+### Node.js
+To find installation instructions for your operating system (Linux, OSX, and Windows), please visit https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+### Redis
+**Note:** Redis is _not_ installed through `npm install` and must be installed separately.
+Redis can be manually downloaded at redis.io/download. Please note that Windows is not directly supported, however there is an experimental Windows port maintained by Microsoft. If you are on OSX and have `brew` installed, you can install Redis with the following: `brew install redis`.
+
+## Clone and Post-Clone Installation:
+- clone this repo
+- cd to this repo and run `npm install`
+
+Testing experiments
+-------
+
+You can use `debug` as your workerId when testing live experiments to help make sure your data doesn't end up the experiment data.
+See [convert.js](https://github.com/codementum/experimentr/blob/master/analysis/src/convert.js#L24) for details.
+
+Another useful trick is to empty the redis database. To do so, run `redis-cli` to get the redis command line prompt, then type `FLUSHDB` to delete all current keys.
+
+More redis commands can be found at [http://redis.io/commands](http://redis.io/commands).
