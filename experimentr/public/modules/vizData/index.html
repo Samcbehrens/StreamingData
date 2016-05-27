@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+<style>
+svg {
+  font: 10px sans-serif;
+}
+
+.line{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.line2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+	
+}
+.line3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+	
+}
+.axis path,
+.axis line{
+	fill:none;
+	stroke:black;
+	shape-rendering: crispEdges;
+}
+#button1{
+	left: 1050px;
+    position: absolute;
+    top: 90px;
+    width: 80px;
+}
+#button2{
+	left: 1050px;
+    position: absolute;
+    top: 250px;
+    width: 80px;
+}
+#button3{
+	left: 1050px;
+    position: absolute;
+    top: 410px;
+    width: 80px;
+}
+</style>
+<div class = "button">
+	<button id = "button1" >answer</button>
+	<button id = "button2" >answer</button>
+	<button id = "button3" >answer</button>
+</div>
+<script>
+var n = 80;
+var margin = {top:20, right:20, bottom:20, left:20},
+	width = 1200 - margin.left - margin.right,
+	height = 500 - margin.top - margin.bottom;
+var x = d3.scale.linear()
+	.domain([0,n-1])
+	.range([0,width]);
+var y = d3.scale.linear()
+    .domain([-0.5, 0.5])
+    .range([height/3, 0]);
+    
+var y2 = d3.scale.linear()
+    .domain([-0.5, 0.5])
+    .range([height*2/3, height/3]);
+  
+var y3 = d3.scale.linear()
+    .domain([-0.5, 0.5])
+    .range([height, height*2/3]);
+      
+var svg = d3.select("body").append("svg")
+    .attr("width", 1000)
+    .attr("height", 500)
+  .append("g")
+    .attr("transform", "translate(" +40+ "," + 20 + ")");
+    
+svg.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(d3.svg.axis().scale(x).orient("bottom"));
+	
+svg.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height);
+	
+svg.append("g")
+	.attr("class","y axis")
+	.call(d3.svg.axis().scale(y).orient("left"));
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y2(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+
+svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform","translate(0,"+(height/3)+")")
+    .call(d3.svg.axis().scale(y).orient("left"));
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y3(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+
+svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform","translate(0,"+(height*2/3)+")")
+    .call(d3.svg.axis().scale(y).orient("left"));  
+	
+d3.tsv("Data4.tsv", type, function(error,data){
+	console.log(data);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
+	//console.log(y(d.value));
+
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","line")
+		.attr("d",line)
+		.transition()
+		.duration(500000)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)");
+				
+})
+
+d3.tsv("Data5.tsv", type, function(error,data){
+	console.log(data);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y2(d.value);})
+		.interpolate("basis");
+
+
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","line2")
+		.attr("d",line)
+		.transition()
+		.duration(500000)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)");
+		//.attr("stroke",st)
+				
+})
+
+d3.tsv("Data6.tsv", type, function(error,data){
+	console.log(data);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y3(d.value);})
+		.interpolate("basis");
+
+
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","line3")
+		.attr("d",line)
+		.transition()
+		.duration(500000)
+		.ease("linear")
+		.attr("transform","translate("+x(-2000) + ",0)");
+				
+})
+
+function type(d){
+	d.index = +d.index;
+	d.value = +d.value;
+	return d;
+}
+
+</script>
+</body>
+</html>
