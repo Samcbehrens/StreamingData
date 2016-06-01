@@ -75,7 +75,7 @@ io.listen(server).on('connection', function (socket) {
         console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
     });
     socket.on('mouseClick', function(msg){
-      console.log('click event: ' + msg.buttonTitle );
+      console.log('click event: ' + msg.buttonTitle + msg.timePressed);
     }); 
 })
 

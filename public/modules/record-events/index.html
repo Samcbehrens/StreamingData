@@ -10,7 +10,7 @@
 <script>
 var socket = io.connect();
 	(function(){
-	
+	experimentr.startTimer('websocketTest')
 	document.onmousemove = sendMouseMove;
 	function sendMouseMove(event) {
         var dot, eventDoc, doc, body, pageX, pageY;
@@ -41,7 +41,8 @@ var socket = io.connect();
 
 function pressed(buttonTitle){
 	console.log(buttonTitle);
-	socket.emit('mouseClick',{buttonTitle: buttonTitle});
+	var timePressed = experimentr.now('websocketTest');
+	socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed});
 }
 
 </script>

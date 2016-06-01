@@ -149,6 +149,12 @@ experimentr = function() {
     data['time_start_'+x] = Date.now();
   }
 
+  experimentr.now = function(x){
+    var timeNow = Date.now();
+    var timeSinceStart = timeNow - parseFloat(data['time_start_'+x]);
+    return(timeSinceStart);
+  }
+
   // End an existing timer (using a String key)
   // TODO throw an error if a start wasn't called.
   experimentr.endTimer = function(x) {
