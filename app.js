@@ -6,7 +6,7 @@
 var express     = require('express')
   , http        = require('http')
   , redis       = require('redis')
-  , socketio    = require('socketio')
+  , io    = require('socket.io')
   , redisClient
   , port        = process.argv[2] || 4000
   , rport       = process.argv[3] || 6379
@@ -70,12 +70,10 @@ var server = http.createServer(app).listen(port, function (err) {
 
 server.listen(socketPort)
 
-
-
-// socketio.listen(server).on('connection', function (socket) {
-//     socket.on('message', function (msg) {
-//         console.log('Message Received: ', msg);
-//         socket.broadcast.emit('message', msg);
-//     });
-// })
+io.listen(server).on('connection', function (socket) {
+    socket.on('message', function (msg) {
+        console.log('Message Received: ', msg);
+        socket.broadcast.emit('message', msg);
+    });
+})
 
