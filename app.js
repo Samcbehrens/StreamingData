@@ -8,7 +8,7 @@ var express     = require('express')
   , redis       = require('redis')
   , socketio    = require('socketio')
   , redisClient
-  , port        = process.argv[2] || 3000
+  , port        = process.argv[2] || 4000
   , rport       = process.argv[3] || 6379
   , debug       = process.argv[4] || null
 
@@ -61,7 +61,15 @@ app.post('/', function handlePost(req, res) {
   res.send(200)
 })
 
+
+socketio.listen(server).on('connection', function(socket){
+  socket.on('message', function(msg){
+    console.log('Message Received', msg); 
+    socket.broadcast.emit('message', msg);
+  });
+});
+
 // Create the server and tell which port to listen to
-http.createServer(app).listen(port, function (err) {
+var server = http.createServer(app).listen(port, function (err) {
   if (!err) console.log('Listening on port ' + port)
 })
