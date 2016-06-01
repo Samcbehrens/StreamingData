@@ -3,13 +3,14 @@
 <div id = "record-events">
 	<p>This is a test of websockets</p>
 	<div id = "test-buttons">
-		<input type ="button" value = "button1" onClick = "pressed()">
-		<input type ="button" value = "button2" onClick = "pressed()">
+		<input type ="button" value = "button1" onClick = "pressed(this.value)">
+		<input type ="button" value = "button2" onClick = "pressed(this.value)">
 	</div>
 </div>
 <script>
+var socket = io.connect();
 	(function(){
-	var socket = io.connect();
+	
 	document.onmousemove = sendMouseMove;
 	function sendMouseMove(event) {
         var dot, eventDoc, doc, body, pageX, pageY;
@@ -32,12 +33,16 @@
               (doc && doc.clientTop  || body && body.clientTop  || 0 );
         }
         socket.emit('mouseMove',{mouseX: event.pageX, mouseY: event.pageY});
-        console.log(event.pageX)
-        console.log(event.pageY)
+        // console.log(event.pageX)
+        // console.log(event.pageY)
         // Use event.pageX / event.pageY here
     }
 })();
 
+function pressed(buttonTitle){
+	console.log(buttonTitle);
+	socket.emit('mouseClick',{buttonTitle: buttonTitle});
+}
 
 </script>
 </body>
