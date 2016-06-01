@@ -6,6 +6,7 @@
 var express     = require('express')
   , http        = require('http')
   , redis       = require('redis')
+  , socketio    = require('socketio')
   , redisClient
   , port        = process.argv[2] || 3000
   , rport       = process.argv[3] || 6379
