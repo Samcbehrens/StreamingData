@@ -71,9 +71,8 @@ var server = http.createServer(app).listen(port, function (err) {
 server.listen(socketPort)
 
 io.listen(server).on('connection', function (socket) {
-    socket.on('message', function (msg) {
-        console.log('Message Received: ', msg);
-        socket.broadcast.emit('message', msg);
+    socket.on('mouseMove', function (msg) {
+        console.log('Message Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
     });
 })
 
