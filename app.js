@@ -25,7 +25,7 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-  // console.log(d)
+   console.log(d)
   redisClient.hmset("key", d.postId, d)
 
   if( debug )
@@ -58,11 +58,12 @@ function handleCollectedDataPost(postId){
   // console.log('nuggets in redis')
 
   var sendInBulk = {mouseLocation, mouseAction}
-  // console.log(sendInBulk)
+   console.log(sendInBulk)
 
   //sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
   sendInBulk = {'postId': postId, 'data':sendInBulk}
   save(sendInBulk)
+
   mouseLocation = [];
   mouseAction =[];
 }
