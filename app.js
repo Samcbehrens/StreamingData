@@ -4,14 +4,14 @@
 // Example run command: `node app.js 9000 6380 true`; listen on port 9000, connect to redis on 6380, debug printing on.
 
 var express     = require('express')
-  , http        = require('http')
-  , redis       = require('redis')
-  , io          = require('socket.io')
-  , redisClient
-  , port        = process.argv[2] || 4000
-  , rport       = process.argv[3] || 6379
-  , debug       = process.argv[4] || null
-  , socketPort  = process.argv[5] || 80
+, http        = require('http')
+, redis       = require('redis')
+, io          = require('socket.io')
+, redisClient
+, port        = process.argv[2] || 4000
+, rport       = process.argv[3] || 6379
+, debug       = process.argv[4] || null
+, socketPort  = process.argv[5] || 80
 
 // Database setup
 redisClient = redis.createClient(rport)
@@ -52,15 +52,12 @@ app.post('/finish', function(req, res) {
 })
 
 // handle posts  from front front end for mouse movement and mouse action information
-function handleCollectedDataPost(){
-  // var d = req.body
-  // if (!d.postId) d.postId = (+new Date()).toString(36)
+function handleCollectedDataPost(postId, timestamp){
   console.log('nuggets in redis')
-  timestamp = (new Date()).getTime()
-  postId = {postId, fakeId}
-  sendInBulk = { postId, timestamp, mouseLocation, mouseAction}
-  console.log(sendInBulk);
+
+  var sendInBulk = {postId, mouseLocation, mouseAction}
   sendInBulk = JSON.stringify(sendInBulk)
+  console.log(sendInBulk)
   save(sendInBulk)
 }
 
@@ -71,7 +68,7 @@ app.post('/', function handlePost(req, res) {
   // If a postId doesn't exist, add one (it's random, based on date)
   if (!d.postId) d.postId = (+new Date()).toString(36)
   // Add a timestamp
-  d.timestamp = (new Date()).getTime()
+d.timestamp = (new Date()).getTime()
   // Save the data to our database
   save(d)
   // Send a 'success' response to the frontend
@@ -87,20 +84,20 @@ var server = http.createServer(app).listen(port, function (err) {
 server.listen(socketPort)
 
 io.listen(server).on('connection', function (socket) {
-    socket.on('mouseMove', function (msg) {
-      mouseLocation.push([msg.mouseX, msg.mouseY])
-        console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
-    });
+  socket.on('mouseMove', function (msg) {
+    mouseLocation.push([msg.mouseX, msg.mouseY])
+    console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
+  });
 
-    socket.on('mouseClick', function(msg){
-      console.log('mouseCLICKED!!!'+ msg.buttonTitle);
-      if(msg.buttonTitle=='next-button'){
-        console.log('mouse clicked and stuff is being sent away!! ')
-        handleCollectedDataPost();
-      }else{
-        mouseAction.push([msg.buttonTitle, msg.timePressed])
-       console.log('click event: ' + msg.buttonTitle + msg.timePressed);
-      }
-    }); 
+  socket.on('mouseClick', function(msg){
+    console.log('mouseCLICKED!!!'+ msg.buttonTitle);
+    if(msg.buttonTitle=='next-button'){
+      console.log('mouse clicked and stuff is being sent away!! ')
+      handleCollectedDataPost(msg.postId, msg.timestamp);
+    }else{
+      mouseAction.push([msg.buttonTitle, msg.timePressed])
+      console.log('click event: ' + msg.buttonTitle + msg.timePressed);
+    }
+  }); 
 })
 

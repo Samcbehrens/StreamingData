@@ -45,7 +45,9 @@ d3.select('body').selectAll('button').on('click', function(){
 function pressed(buttonTitle){
 	console.log(buttonTitle);
 	var timePressed = experimentr.now('websocketTest');
-	socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed});
+	timestamp = new Date().getTime();
+	postId = 1234
+	socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
 };
 
 function validate() {
