@@ -25,7 +25,7 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-  console.log(d)
+  // console.log(d)
   redisClient.hmset("key", d.postId, d)
 
   if( debug )
@@ -55,12 +55,12 @@ app.post('/finish', function(req, res) {
 
 // handle posts  from front front end for mouse movement and mouse action information
 function handleCollectedDataPost(postId){
-  console.log('nuggets in redis')
+  // console.log('nuggets in redis')
 
   var sendInBulk = {mouseLocation, mouseAction}
-  console.log(sendInBulk)
+  // console.log(sendInBulk)
 
-  sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
+  //sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
   sendInBulk = {'postId': postId, 'data':sendInBulk}
   save(sendInBulk)
 }
@@ -91,17 +91,17 @@ server.listen(socketPort)
 io.listen(server).on('connection', function (socket) {
   socket.on('mouseMove', function (msg) {
     mouseLocation.push([msg.mouseX, msg.mouseY])
-    console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
+    // console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
   });
 
   socket.on('mouseClick', function(msg){
     console.log('mouseCLICKED!!!'+ msg.buttonTitle);
     if(msg.buttonTitle=='next-button'){
-      console.log('mouse clicked and stuff is being sent away!! ')
+      // console.log('mouse clicked and stuff is being sent away!! ')
       handleCollectedDataPost(msg.postId, msg.timestamp);
     }else{
       mouseAction.push([msg.buttonTitle, msg.timePressed])
-      console.log('click event: ' + msg.buttonTitle + msg.timePressed);
+      // console.log('click event: ' + msg.buttonTitle + msg.timePressed);
     }
   }); 
 })

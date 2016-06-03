@@ -3,8 +3,8 @@
 	<div id = "record-events">
 		<p>This is a test of websockets</p>
 		<div id = "test-buttons">
-			<button type ="button" id = "button1">Button 1</button>
-			<button type ="button" id = "button2">Button 2</button>
+			<button type ="button" name ="researchButton" id = "button1">Button 1</button>
+			<button type ="button" name ="researchButton" id = "button2">Button 2</button>
 		</div>
 	</div>
 	<script>
@@ -39,7 +39,13 @@
 d3.select('body').selectAll('button').on('click', function(){
 	pressed(d3.select(this).attr('id'));
 	console.log(d3.select(this).attr('id'));
-	validate();
+
+	if (d3.select(this).attr('name') == 'researchButton'){
+		validate();
+	}else{
+		experimentr.next()
+	};
+	
 	});
 
 function pressed(buttonTitle){
@@ -51,7 +57,7 @@ function pressed(buttonTitle){
 };
 
 function validate() {
-
+	console.log('validate called')
 	experimentr.endTimer('demo');
 	experimentr.release();
 }
