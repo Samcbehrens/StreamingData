@@ -63,6 +63,8 @@ function handleCollectedDataPost(postId){
   //sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
   sendInBulk = {'postId': postId, 'data':sendInBulk}
   save(sendInBulk)
+  mouseLocation = [];
+  mouseAction =[];
 }
 
 // Handle POSTs from frontend
