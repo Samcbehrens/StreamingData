@@ -17,6 +17,7 @@ experimentr = function() {
     return data;
   };
 
+  // send all mousemovement to websocket to save to redis. 
   experimentr.sendMouseMovement = function(event) {
       var dot, eventDoc, doc, body, pageX, pageY;
 
