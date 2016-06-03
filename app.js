@@ -6,7 +6,7 @@
 var express     = require('express')
   , http        = require('http')
   , redis       = require('redis')
-  , io    = require('socket.io')
+  , io          = require('socket.io')
   , redisClient
   , port        = process.argv[2] || 4000
   , rport       = process.argv[3] || 6379
@@ -19,6 +19,9 @@ redisClient = redis.createClient(rport)
 redisClient.on('connect', function() {
   console.log('Connected to redis.')
 })
+
+var mouseAction = [];
+var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
@@ -48,6 +51,19 @@ app.post('/finish', function(req, res) {
   res.send(200)
 })
 
+// handle posts  from front front end for mouse movement and mouse action information
+function handleCollectedDataPost(){
+  // var d = req.body
+  // if (!d.postId) d.postId = (+new Date()).toString(36)
+  console.log('nuggets in redis')
+  timestamp = (new Date()).getTime()
+  postId = {postId, fakeId}
+  sendInBulk = { postId, timestamp, mouseLocation, mouseAction}
+  console.log(sendInBulk);
+  sendInBulk = JSON.stringify(sendInBulk)
+  save(sendInBulk)
+}
+
 // Handle POSTs from frontend
 app.post('/', function handlePost(req, res) {
   // Get experiment data from request body
@@ -72,10 +88,19 @@ server.listen(socketPort)
 
 io.listen(server).on('connection', function (socket) {
     socket.on('mouseMove', function (msg) {
+      mouseLocation.push([msg.mouseX, msg.mouseY])
         console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
     });
+
     socket.on('mouseClick', function(msg){
-      console.log('click event: ' + msg.buttonTitle + msg.timePressed);
+      console.log('mouseCLICKED!!!'+ msg.buttonTitle);
+      if(msg.buttonTitle=='next-button'){
+        console.log('mouse clicked and stuff is being sent away!! ')
+        handleCollectedDataPost();
+      }else{
+        mouseAction.push([msg.buttonTitle, msg.timePressed])
+       console.log('click event: ' + msg.buttonTitle + msg.timePressed);
+      }
     }); 
 })
 
