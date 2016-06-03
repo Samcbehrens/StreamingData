@@ -11,57 +11,36 @@
 	var socket = io.connect();
 	(function(){
 		experimentr.startTimer('websocketTest')
-		document.onmousemove = sendMouseMove;
-		function sendMouseMove(event) {
-			var dot, eventDoc, doc, body, pageX, pageY;
+		document.onmousemove = experimentr.sendMouseMovement;
 
-        event = event || window.event; // IE-ism
+	})();
 
-        // If pageX/Y aren't available and clientX/Y are,
-        // calculate pageX/Y - logic taken from jQuery.
-        // (This is to support old IE)
-        if (event.pageX == null && event.clientX != null) {
-        	eventDoc = (event.target && event.target.ownerDocument) || document;
-        	doc = eventDoc.documentElement;
-        	body = eventDoc.body;
+	d3.select('body').selectAll('button').on('click', function(){
+		pressed(d3.select(this).attr('id'));
+		console.log(d3.select(this).attr('id'));
 
-        	event.pageX = event.clientX +
-        	(doc && doc.scrollLeft || body && body.scrollLeft || 0) -
-        	(doc && doc.clientLeft || body && body.clientLeft || 0);
-        	event.pageY = event.clientY +
-        	(doc && doc.scrollTop  || body && body.scrollTop  || 0) -
-        	(doc && doc.clientTop  || body && body.clientTop  || 0 );
-        }
-        socket.emit('mouseMove',{mouseX: event.pageX, mouseY: event.pageY});
-    }
-})();
-
-d3.select('body').selectAll('button').on('click', function(){
-	pressed(d3.select(this).attr('id'));
-	console.log(d3.select(this).attr('id'));
-
-	if (d3.select(this).attr('name') == 'researchButton'){
-		validate();
-	}else{
-		experimentr.next()
-	};
-	
+		if (d3.select(this).attr('name') == 'researchButton'){
+			validate();
+		}else{
+			experimentr.next()
+		};
+		
 	});
 
-function pressed(buttonTitle){
-	console.log(buttonTitle);
-	var timePressed = experimentr.now('websocketTest');
-	timestamp = new Date().getTime();
-	postId = 1234
-	socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
-};
+	function pressed(buttonTitle){
+		console.log(buttonTitle);
+		var timePressed = experimentr.now('websocketTest');
+		timestamp = new Date().getTime();
+		postId = 1234
+		socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
+	};
 
-function validate() {
-	console.log('validate called')
-	experimentr.endTimer('demo');
-	experimentr.release();
-}
+	function validate() {
+		console.log('validate called')
+		experimentr.endTimer('demo');
+		experimentr.release();
+	}
 
-</script>
+	</script>
 </body>
 </html>
