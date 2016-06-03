@@ -25,7 +25,8 @@
 
 		if (d3.select(this).attr('name') == 'researchButton'){
 			validate();
-		}else{
+		}else{ 
+			//stops  recording and transmitting mouse events
 			document.onmousemove = experimentr.stopMouseMovementRec;
 			socket.emit('disconnect');
 			experimentr.next();

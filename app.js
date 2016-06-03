@@ -93,7 +93,7 @@ server.listen(socketPort)
 
 io.listen(server).on('connection', function (socket) {
   socket.on('mouseMove', function (msg) {
-    mouseLocation.push([msg.mouseX, msg.mouseY])
+    mouseLocation.push({'timestamp': msg.timestamp, 'X': msg.mouseX, 'Y': msg.mouseY})
     // console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
   });
 
@@ -107,7 +107,7 @@ io.listen(server).on('connection', function (socket) {
       // console.log('mouse clicked and stuff is being sent away!! ')
       handleCollectedDataPost(msg.postId, msg.timestamp);
     }else{
-      mouseAction.push([msg.buttonTitle, msg.timePressed])
+      mouseAction.push({'timestamp': msg.timePressed, 'buttonTitle':msg.buttonTitle })
       // console.log('click event: ' + msg.buttonTitle + msg.timePressed);
     }
   }); 

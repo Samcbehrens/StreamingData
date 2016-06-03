@@ -39,7 +39,8 @@ experimentr = function() {
           (doc && doc.clientTop  || body && body.clientTop  || 0 );
         }
         console.log(event.pageX + ' '+ event.pageY);
-        socket.emit('mouseMove',{mouseX: event.pageX, mouseY: event.pageY});
+        timeNow = new Date().getTime();
+        socket.emit('mouseMove',{timestamp: timeNow, mouseX: event.pageX, mouseY: event.pageY});
     };
 
   experimentr.stopMouseMovementRec = function(event){
