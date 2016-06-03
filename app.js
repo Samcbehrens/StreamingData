@@ -25,7 +25,7 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-   console.log(d)
+   // console.log(d)
   redisClient.hmset("key", d.postId, d)
 
   if( debug )
@@ -96,6 +96,10 @@ io.listen(server).on('connection', function (socket) {
     mouseLocation.push([msg.mouseX, msg.mouseY])
     // console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
   });
+
+  socket.on('disconnect', function(){
+    console.log('disconnected');
+  })
 
   socket.on('mouseClick', function(msg){
     console.log('mouseCLICKED!!!'+ msg.buttonTitle);

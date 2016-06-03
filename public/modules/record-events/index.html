@@ -22,19 +22,19 @@
 	//send information to websocket unless it is the next button. If next button move to next module
 	d3.select('body').selectAll('button').on('click', function(){
 		pressed(d3.select(this).attr('id'));
-		console.log(d3.select(this).attr('id'));
 
 		if (d3.select(this).attr('name') == 'researchButton'){
 			validate();
 		}else{
-			experimentr.next()
+			document.onmousemove = experimentr.stopMouseMovementRec;
+			socket.emit('disconnect');
+			experimentr.next();
 		};
 
 	});
 
 	//when a button is pressed send information to redis via websocket
 	function pressed(buttonTitle){
-		console.log(buttonTitle);
 		var timePressed = experimentr.now('websocketTest');
 		timestamp = new Date().getTime();
 		postId = 1234
@@ -43,7 +43,6 @@
 
 	//allows for the next button to be pressed
 	function validate() {
-		console.log('validate called')
 		experimentr.endTimer('demo');
 		experimentr.release();
 	}

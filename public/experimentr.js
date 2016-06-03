@@ -42,6 +42,10 @@ experimentr = function() {
         socket.emit('mouseMove',{mouseX: event.pageX, mouseY: event.pageY});
     };
 
+  experimentr.stopMouseMovementRec = function(event){
+    event.stopPropagation();
+  }
+
   // Starts the experiment by loading the first module
   experimentr.start = function() {
     init();
@@ -55,7 +59,6 @@ experimentr = function() {
   experimentr.onNext = function(cb) {
     d3.select('#next-button').on('click', function() {
       cb();
-      console.log('clicking next should move to next call ')
       experimentr.next();
     });
   };
@@ -85,7 +88,6 @@ experimentr = function() {
 
   // Load the next module.
   experimentr.next = function() {
-    console.log('get to the next call ');
     experimentr.clearNext();
     experimentr.showNext();
     current = current + 1;
