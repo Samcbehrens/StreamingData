@@ -25,7 +25,9 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-  redisClient.hmset(d.postId, d)
+  console.log(d)
+  redisClient.hmset("key", d.postId, d)
+
   if( debug )
     console.log('saved to redis: ' + d.postId +', at: '+ (new Date()).toString())
 }
@@ -52,12 +54,14 @@ app.post('/finish', function(req, res) {
 })
 
 // handle posts  from front front end for mouse movement and mouse action information
-function handleCollectedDataPost(postId, timestamp){
+function handleCollectedDataPost(postId){
   console.log('nuggets in redis')
 
-  var sendInBulk = {postId, mouseLocation, mouseAction}
-  sendInBulk = JSON.stringify(sendInBulk)
+  var sendInBulk = {mouseLocation, mouseAction}
   console.log(sendInBulk)
+
+  sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
+  sendInBulk = {'postId': postId, 'data':sendInBulk}
   save(sendInBulk)
 }
 
@@ -71,6 +75,7 @@ app.post('/', function handlePost(req, res) {
 d.timestamp = (new Date()).getTime()
   // Save the data to our database
   save(d)
+
   // Send a 'success' response to the frontend
   res.send(200)
 })
