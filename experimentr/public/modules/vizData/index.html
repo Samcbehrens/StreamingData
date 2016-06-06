@@ -9,7 +9,7 @@ svg {
   font: 10px sans-serif;
 }
 
-.line{
+.line1{
 	fill: none;
 	stroke: black;
 	stroke-width: 2px;
@@ -26,41 +26,102 @@ svg {
 	stroke-width: 2px;
 	
 }
+.lineClick1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+#lineCopy1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.lineClick2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+	opacity: 0.5;
+}
+#lineCopy2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+}
+.lineClick3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+	opacity: 0.5;
+}
+#lineCopy3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+}
 .axis path,
 .axis line{
 	fill:none;
 	stroke:black;
 	shape-rendering: crispEdges;
-}
-#button1{
-	left: 1050px;
-    position: absolute;
-    top: 90px;
-    width: 80px;
-}
-#button2{
-	left: 1050px;
-    position: absolute;
-    top: 250px;
-    width: 80px;
-}
-#button3{
-	left: 1050px;
-    position: absolute;
-    top: 410px;
-    width: 80px;
+
 }
 </style>
-<div class = "button">
-	<button id = "button1" >answer</button>
-	<button id = "button2" >answer</button>
-	<button id = "button3" >answer</button>
-</div>
+
 <script>
-var n = 80;
+window.addEventListener("keydown", checkKeyPressed, false);
+var copyIndex = 1;
+function checkKeyPressed(e) {
+    if (e.keyCode == "13") {
+    update("A",1);
+	update("B",2);
+	update("C",3);
+	copyIndex = copyIndex + 1;
+    }
+}
+/*function update(){
+	var orig = d3.select(".lineClick1");
+	var origNode = orig.node();
+	var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
+		.attr("class","lineCopy"+copyIndex)
+		.attr("id","lineCopy")
+		.transition()
+		.duration(200000)
+		.style("visibility","visible");
+	var string = ".lineCopy"+(copyIndex-1);
+	console.log(string);
+	var preNode = d3.select(string);
+	preNode.transition()
+		.style("visibility","hidden");
+	copyIndex = copyIndex + 1;
+	console.log(preNode);
+	
+}*/
+function update(d,i){
+	var orig = d3.select(".lineClick"+i);
+	var origNode = orig.node();
+	var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
+		.attr("class","lineCopy"+d+copyIndex)
+		.attr("id","lineCopy"+i)
+		.transition()
+		//.duration(200000)
+		.style("visibility","visible");
+
+	var string = ".lineCopy"+d+(copyIndex-1);
+	console.log(string);
+	var preNode = d3.select(string)
+		.remove();
+		//.transition()
+		//.style("visibility","hidden");
+	/*preNode.transition()
+		.style("visibility","visible");*/
+	//copyIndex = copyIndex + 1;
+	
+}
+var n = 30;
 var margin = {top:20, right:20, bottom:20, left:20},
-	width = 1200 - margin.left - margin.right,
+	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
+var duration = 200000;
 var x = d3.scale.linear()
 	.domain([0,n-1])
 	.range([0,width]);
@@ -75,13 +136,13 @@ var y2 = d3.scale.linear()
 var y3 = d3.scale.linear()
     .domain([-0.5, 0.5])
     .range([height, height*2/3]);
-      
-var svg = d3.select("body").append("svg")
-    .attr("width", 1000)
-    .attr("height", 500)
-  .append("g")
+//The moving line part      
+var svgContainer = d3.select("body").append("svg")
+    .attr("width", 1500)
+    .attr("height", 1000);
+//var svg = d3.select(svgInterface)
+var svg	= svgContainer.append("g")
     .attr("transform", "translate(" +40+ "," + 20 + ")");
-    
 svg.append("g")
 	.attr("class","x axis")
 	.attr("transform","translate(0," + y(0)+")")
@@ -91,56 +152,60 @@ svg.append("defs").append("clipPath")
 	.attr("id","clip")
 	.append("rect")
 	.attr("width",width)
-	.attr("height",height);
-	
-svg.append("g")
-	.attr("class","y axis")
-	.call(d3.svg.axis().scale(y).orient("left"));
+	.attr("height",height+500);
+svg.append("defs").append("clipPath")
+	.attr("id","clip2")
+	.append("rect")
+	.attr("transform","translate(0,0)")
+	.attr("width",width)
+	.attr("height",height+500);
 
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y2(0) + ")")
     .call(d3.svg.axis().scale(x).orient("bottom"));
-
-svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform","translate(0,"+(height/3)+")")
-    .call(d3.svg.axis().scale(y).orient("left"));
-
+    
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y3(0) + ")")
     .call(d3.svg.axis().scale(x).orient("bottom"));
 
-svg.append("g")
+	
+/*svg.append("g")
+	.attr("class","y axis")
+	.call(d3.svg.axis().scale(y).orient("left"));
+/*svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform","translate(0,"+(height/3)+")")
+    .call(d3.svg.axis().scale(y).orient("left"));
+/*svg.append("g")
     .attr("class", "y axis")
     .attr("transform","translate(0,"+(height*2/3)+")")
-    .call(d3.svg.axis().scale(y).orient("left"));  
+    .call(d3.svg.axis().scale(y).orient("left"));  */
+
+d3.tsv("data/caseTest1.tsv", type, function(error,data){
 	
-d3.tsv("Data4.tsv", type, function(error,data){
-	console.log(data);
 	var line = d3.svg.line()
 		.x(function(d,i){return x(d.index);})
 		.y(function(d,i){return y(d.value);})
 		.interpolate("basis");
-	//console.log(y(d.value));
 
 	var path = svg.append("g")
 		.attr("clip-path","url(#clip)")
 		//.attr("id","path")
 		.append("path")
 		.datum(data)
-		.attr("class","line")
+		.attr("class","line1")
 		.attr("d",line)
 		.transition()
-		.duration(500000)
+		.duration(duration)
 		.ease("linear")
 		.attr("transform","translate("+x(-1999) + ",0)");
-				
+
 })
 
-d3.tsv("Data5.tsv", type, function(error,data){
-	console.log(data);
+d3.tsv("data/caseTest2.tsv", type, function(error,data){
+
 	var line = d3.svg.line()
 		.x(function(d,i){return x(d.index);})
 		.y(function(d,i){return y2(d.value);})
@@ -155,15 +220,17 @@ d3.tsv("Data5.tsv", type, function(error,data){
 		.attr("class","line2")
 		.attr("d",line)
 		.transition()
-		.duration(500000)
+		.duration(duration)
 		.ease("linear")
 		.attr("transform","translate("+x(-1999) + ",0)");
 		//.attr("stroke",st)
+		
+
 				
 })
 
-d3.tsv("Data6.tsv", type, function(error,data){
-	console.log(data);
+d3.tsv("data/caseTest3.tsv", type, function(error,data){
+
 	var line = d3.svg.line()
 		.x(function(d,i){return x(d.index);})
 		.y(function(d,i){return y3(d.value);})
@@ -178,12 +245,107 @@ d3.tsv("Data6.tsv", type, function(error,data){
 		.attr("class","line3")
 		.attr("d",line)
 		.transition()
-		.duration(500000)
+		.duration(duration)
 		.ease("linear")
 		.attr("transform","translate("+x(-2000) + ",0)");
 				
 })
 
+
+//This is the display part
+var svgClick = svgContainer.append("g")
+	.attr("id","svgClick")
+    .attr("transform", "translate(" +640+ "," + 20 + ")");
+
+svgClick.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(d3.svg.axis().scale(x).orient("bottom"));
+	
+svgClick.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height+500);
+
+
+svgClick.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y2(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+    
+svgClick.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y3(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+
+d3.tsv("data/caseTest1.tsv", type, function(error,data){
+	
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
+
+	var path = svgClick.append("g")
+		.attr("clip-path","url(#clip2)")
+		.attr("transform","translate(0,0)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","lineClick1")
+		.attr("d",line)
+		.transition()
+		.duration(duration)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)")
+		.style("visibility","hidden");
+				
+})
+
+d3.tsv("data/caseTest2.tsv", type, function(error,data){
+	
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y2(d.value);})
+		.interpolate("basis");
+
+	var path = svgClick.append("g")
+		.attr("clip-path","url(#clip2)")
+		.attr("transform","translate(0,0)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","lineClick2")
+		.attr("d",line)
+		.transition()
+		.duration(duration)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)")
+		.style("visibility","hidden");
+				
+})
+d3.tsv("data/caseTest3.tsv", type, function(error,data){
+	
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y3(d.value);})
+		.interpolate("basis");
+
+	var path = svgClick.append("g")
+		.attr("clip-path","url(#clip2)")
+		.attr("transform","translate(0,0)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","lineClick3")
+		.attr("d",line)
+		.transition()
+		.duration(duration)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)")
+		.style("visibility","hidden");
+				
+})
 function type(d){
 	d.index = +d.index;
 	d.value = +d.value;
