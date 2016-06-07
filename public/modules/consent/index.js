@@ -28,8 +28,12 @@
 
       if( workers.indexOf(data.workerId) == -1 ) {
         d3.select('#consentYes').attr('disabled', null);
+        d3.select('#validMessage').style('display', 'inline');
+        d3.select('#invalidMessage').style('display', 'none');
       } else {
         d3.select('#invalidMessage').style('display', 'inline');
+        d3.select('#validMessage').style('display', 'none');
+        d3.select('#consentYes').attr('disabled', true);
       }
     }
   }
