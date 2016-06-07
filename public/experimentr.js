@@ -17,6 +17,36 @@ experimentr = function() {
     return data;
   };
 
+  // send all mousemovement to websocket to save to redis. 
+  experimentr.sendMouseMovement = function(event) {
+      var dot, eventDoc, doc, body, pageX, pageY;
+
+        event = event || window.event; // IE-ism
+
+        // If pageX/Y aren't available and clientX/Y are,
+        // calculate pageX/Y - logic taken from jQuery.
+        // (This is to support old IE)
+        if (event.pageX == null && event.clientX != null) {
+          eventDoc = (event.target && event.target.ownerDocument) || document;
+          doc = eventDoc.documentElement;
+          body = eventDoc.body;
+
+          event.pageX = event.clientX +
+          (doc && doc.scrollLeft || body && body.scrollLeft || 0) -
+          (doc && doc.clientLeft || body && body.clientLeft || 0);
+          event.pageY = event.clientY +
+          (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
+          (doc && doc.clientTop  || body && body.clientTop  || 0 );
+        }
+        console.log(event.pageX + ' '+ event.pageY);
+        timeNow = new Date().getTime();
+        socket.emit('mouseMove',{timestamp: timeNow, mouseX: event.pageX, mouseY: event.pageY});
+    };
+
+  experimentr.stopMouseMovementRec = function(event){
+    event.stopPropagation();
+  }
+
   // Starts the experiment by loading the first module
   experimentr.start = function() {
     init();
@@ -75,6 +105,7 @@ experimentr = function() {
     merge(data, d);
     experimentr.save();
   }
+
 
   // The HTTP POST code for saving experiment data.
   experimentr.save = function(d) {
@@ -147,6 +178,12 @@ experimentr = function() {
   experimentr.startTimer = function(x) {
     console.log('starting timer: '+x);
     data['time_start_'+x] = Date.now();
+  }
+
+  experimentr.now = function(x){
+    var timeNow = Date.now();
+    var timeSinceStart = timeNow - parseFloat(data['time_start_'+x]);
+    return(timeSinceStart);
   }
 
   // End an existing timer (using a String key)
