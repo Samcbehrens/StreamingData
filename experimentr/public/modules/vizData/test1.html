@@ -78,45 +78,19 @@ function checkKeyPressed(e) {
 	copyIndex = copyIndex + 1;
     }
 }
-/*function update(){
-	var orig = d3.select(".lineClick1");
-	var origNode = orig.node();
-	var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
-		.attr("class","lineCopy"+copyIndex)
-		.attr("id","lineCopy")
-		.transition()
-		.duration(200000)
-		.style("visibility","visible");
-	var string = ".lineCopy"+(copyIndex-1);
-	console.log(string);
-	var preNode = d3.select(string);
-	preNode.transition()
-		.style("visibility","hidden");
-	copyIndex = copyIndex + 1;
-	console.log(preNode);
-	
-}*/
+
 function update(d,i){
 	var orig = d3.select(".lineClick"+i);
 	var origNode = orig.node();
 	var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
 		.attr("class","lineCopy"+d+copyIndex)
 		.attr("id","lineCopy"+i)
-		.transition()
-		//.duration(200000)
 		.style("visibility","visible");
 
 	var string = ".lineCopy"+d+(copyIndex-1);
-	console.log(string);
 	var preNode = d3.select(string)
-		.remove();
-		//.transition()
-		//.style("visibility","hidden");
-	/*preNode.transition()
-		.style("visibility","visible");*/
-	//copyIndex = copyIndex + 1;
-	
-}
+		.remove();	
+}	
 var n = 30;
 var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
@@ -169,19 +143,6 @@ svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y3(0) + ")")
     .call(d3.svg.axis().scale(x).orient("bottom"));
-
-	
-/*svg.append("g")
-	.attr("class","y axis")
-	.call(d3.svg.axis().scale(y).orient("left"));
-/*svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform","translate(0,"+(height/3)+")")
-    .call(d3.svg.axis().scale(y).orient("left"));
-/*svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform","translate(0,"+(height*2/3)+")")
-    .call(d3.svg.axis().scale(y).orient("left"));  */
 
 d3.tsv("data/caseTest1.tsv", type, function(error,data){
 	
@@ -278,6 +239,7 @@ svgClick.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y3(0) + ")")
     .call(d3.svg.axis().scale(x).orient("bottom"));
+
 
 d3.tsv("data/caseTest1.tsv", type, function(error,data){
 	
