@@ -68,6 +68,8 @@ svg {
 </style>
 
 <script>
+
+
 window.addEventListener("keydown", checkKeyPressed, false);
 var copyIndex = 1;
 function checkKeyPressed(e) {
@@ -78,6 +80,10 @@ function checkKeyPressed(e) {
 	copyIndex = copyIndex + 1;
     }
 }
+
+var brush = d3.svg.brush()
+    .x(xAxis)
+    .on("brush", brushed);
 
 function update(d,i){
 	var orig = d3.select(".lineClick"+i);
@@ -118,12 +124,14 @@ var svgContainer = d3.select("body").append("svg")
     .attr("height", 1000);
 
 
+var xAxis=d3.svg.axis().scale(x).orient("bottom");
+
 var svg	= svgContainer.append("g")
     .attr("transform", "translate(" +40+ "," + 20 + ")");
 svg.append("g")
 	.attr("class","x axis")
 	.attr("transform","translate(0," + y(0)+")")
-	.call(d3.svg.axis().scale(x).orient("bottom"));
+	.call(xAxis);
 	
 svg.append("defs").append("clipPath")
 	.attr("id","clip")
@@ -141,12 +149,12 @@ svg.append("defs").append("clipPath")
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y2(0) + ")")
-    .call(d3.svg.axis().scale(x).orient("bottom"));
+    .call(xAxis);
     
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y3(0) + ")")
-    .call(d3.svg.axis().scale(x).orient("bottom"));
+    .call(xAxis);
 
 d3.tsv("data/caseTest1.tsv", type, function(error,data){
 	
@@ -257,6 +265,10 @@ d3.tsv("data/caseTest3.tsv", type, function(error,data){
 })
 
 
+function brushed() {
+  console.log(brush.extent())
+}
+
 //This is the display part
 var svgClick = svgContainer.append("g")
 	.attr("id","svgClick")
@@ -265,7 +277,7 @@ var svgClick = svgContainer.append("g")
 svgClick.append("g")
 	.attr("class","x axis")
 	.attr("transform","translate(0," + y(0)+")")
-	.call(d3.svg.axis().scale(x).orient("bottom"));
+	.call(xAxis);
 	
 svgClick.append("defs").append("clipPath")
 	.attr("id","clip")
@@ -277,13 +289,20 @@ svgClick.append("defs").append("clipPath")
 svgClick.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y2(0) + ")")
-    .call(d3.svg.axis().scale(x).orient("bottom"));
+    .call(xAxis);
     
 svgClick.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + y3(0) + ")")
-    .call(d3.svg.axis().scale(x).orient("bottom"));
+    .call(xAxis);
 
+
+ svgClick.append("g")
+      .attr("class", "y brush")
+      .call(brush)
+    .selectAll("rect")
+      .attr("x", 0)
+      .attr("width", width);
 
 function type(d){
 	d.index = +d.index;
