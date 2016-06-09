@@ -81,9 +81,6 @@ function checkKeyPressed(e) {
     }
 }
 
-var brush = d3.svg.brush()
-    .x(xAxis)
-    .on("brush", brushed);
 
 function update(d,i){
 	var orig = d3.select(".lineClick"+i);
@@ -104,6 +101,10 @@ var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
 var duration = 200000;
+
+
+
+
 var x = d3.scale.linear()
 	.domain([0,n-1])
 	.range([0,width]);
@@ -123,6 +124,11 @@ var svgContainer = d3.select("body").append("svg")
     .attr("width", 1500)
     .attr("height", 1000);
 
+
+
+var brush = d3.svg.brush()
+    .x(x)
+    .on("brush", brushed);
 
 var xAxis=d3.svg.axis().scale(x).orient("bottom");
 
@@ -298,11 +304,11 @@ svgClick.append("g")
 
 
  svgClick.append("g")
-      .attr("class", "y brush")
+      .attr("class", "x brush")
       .call(brush)
     .selectAll("rect")
-      .attr("x", 0)
-      .attr("width", width);
+      .attr("y", -6)
+      .attr("height", height);
 
 function type(d){
 	d.index = +d.index;
