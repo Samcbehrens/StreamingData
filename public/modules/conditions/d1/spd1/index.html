@@ -2,9 +2,17 @@
 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="modules/conditions/d1/spd1/d1Spd1.css">
+	<link rel="stylesheet" type="text/css" href="modules/conditions/d1/spd1/d1Spd1.css">
 </head>
 <body>
+
+
+	<div id = 'cat1spd1'>
+		<div id = "test-buttons">
+			<button type ="button" name ="researchButton" id = "button1">Anomaly in graph 1</button>
+		</div>
+	</div>
+
 	<script>
 	var socket = io.connect();
 	(function(){
@@ -16,56 +24,38 @@
 
 	})();
 
-	d3.select('body').selectAll('button').on('click', function(){
-		pressed(d3.select(this).attr('id'));	
+	d3.select('body').selectAll('button').on('click',function(){
+		pressed(d3.select(this).attr('id'));
+		console.log('button pressed');
+		if (d3.select(this).attr('name') !== 'researchButton'){
+				//stops  recording and transmitting mouse events
+				document.onmousemove = experimentr.stopMouseMovementRec;
+				socket.emit('disconnect');
+				experimentr.next();
+			};
+		});
 
-		if (d3.select(this).attr('name') == 'researchButton'){
-			if (typeof(extent) != "undefined") {
-						var rangeExtent = [extent[0] , extent[1] ]; //convert
-						var rangeWidth  = rangeExtent[1] - rangeExtent[0];
-					}
+
+	window.addEventListener("keydown", checkKeyPressed, false);
 
 
-					validate();
-				}else{ 
-			//stops  recording and transmitting mouse events
-			document.onmousemove = experimentr.stopMouseMovementRec;
-			socket.emit('disconnect');
-			experimentr.next();
-		};
+	function checkKeyPressed(e) {
+		if (e.keyCode == "13" || e.keyCode == "32") {
+			pressed(e.keyCode);
+			console.log('key pressed')
+		}
+	}
 
-	});
 
 	function pressed(buttonTitle){
 		var timePressed = experimentr.now('websocketTest');
 		timestamp = new Date().getTime();
+		console.log('mouse pressed. Socket emit ')
 		postId = 1234
 		socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
 	};
 
-	window.addEventListener("keydown", checkKeyPressed, false);
-	var copyIndex = 1;
-	function checkKeyPressed(e) {
-		if (e.keyCode == "13") {
-			update("A",1);
-			update("B",2);
-			update("C",3);
-			copyIndex = copyIndex + 1;
-		}
-	}
 
-	function update(d,i){
-		var orig = d3.select(".lineClick"+i);
-		var origNode = orig.node();
-		var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
-		.attr("class","lineCopy"+d+copyIndex)
-		.attr("id","lineCopy"+i)
-		.style("visibility","visible");
-
-		var string = ".lineCopy"+d+(copyIndex-1);
-		var preNode = d3.select(string)
-		.remove();	
-	}	
 
 
 	var n = 30;
@@ -216,12 +206,9 @@ function validate() {
 	experimentr.endTimer('demo');
 	experimentr.release();
 }
+
 </script>
-	<div id = 'cat1spd1'>
-		<div id = "test-buttons">
-			<button type ="button" name ="researchButton" id = "button1">Anomaly in graph 1</button>
-		</div>
-	</div>
+
 
 </body>
 </html>
