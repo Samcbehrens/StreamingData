@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="experiments/cat1Spd1Exp/cat1Spd1Exp.css">
+<link rel="stylesheet" type="text/css" href="modules/conditions/d1/spd1/cat1Spd1Exp.css">
 </head>
 <body>
 
@@ -277,13 +277,6 @@ svgClick.append("g")
 .attr("transform", "translate(0," + y3(0) + ")")
 .call(xAxis);
 
-
-svgClick.append("g")
-.attr("class", "x brush")
-.call(brush)
-.selectAll("rect")
-.attr("y", -6)
-.attr("height", height);
 
 function type(d){
 	d.index = +d.index;
