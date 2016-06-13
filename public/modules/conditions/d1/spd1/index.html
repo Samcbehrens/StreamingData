@@ -5,13 +5,6 @@
 <link rel="stylesheet" type="text/css" href="modules/conditions/d1/spd1/cat1Spd1Exp.css">
 </head>
 <body>
-
-	<div id = 'cat1spd1'>
-		<div id = "test-buttons">
-			<button type ="button" name ="researchButton" id = "button1">Anomaly in graph 1</button>
-		</div>
-	</div>
-
 	<script>
 	var socket = io.connect();
 	(function(){
@@ -158,19 +151,6 @@ d3.tsv("data/caseTest1.tsv", type, function(error,data){
 		.ease("linear")
 		.attr("transform","translate("+x(-1999) + ",0)");
 
-		var pathCopy = svgClick.append("g")
-		.attr("clip-path","url(#clip2)")
-		.attr("transform","translate(0,0)")
-		.append("path")
-		.datum(data)
-		.attr("class","lineClick1")
-		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)")
-		.style("visibility","hidden");
-
 
 	})
 
@@ -195,19 +175,6 @@ d3.tsv("data/caseTest2.tsv", type, function(error,data){
 		.attr("transform","translate("+x(-1999) + ",0)");
 		//.attr("stroke",st)
 		
-		var pathCopy = svgClick.append("g")
-		.attr("clip-path","url(#clip2)")
-		.attr("transform","translate(0,0)")
-		//.attr("id","path")
-		.append("path")
-		.datum(data)
-		.attr("class","lineClick2")
-		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)")
-		.style("visibility","hidden");
 
 	})
 
@@ -231,51 +198,9 @@ d3.tsv("data/caseTest3.tsv", type, function(error,data){
 		.ease("linear")
 		.attr("transform","translate("+x(-2000) + ",0)");
 
-		var pathCopy = svgClick.append("g")
-		.attr("clip-path","url(#clip2)")
-		.attr("transform","translate(0,0)")
-		//.attr("id","path")
-		.append("path")
-		.datum(data)
-		.attr("class","lineClick3")
-		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)")
-		.style("visibility","hidden");
-
 	})
 
 
-
-
-//This is the display part
-var svgClick = svgContainer.append("g")
-.attr("id","svgClick")
-.attr("transform", "translate(" +640+ "," + 20 + ")");
-
-svgClick.append("g")
-.attr("class","x axis")
-.attr("transform","translate(0," + y(0)+")")
-.call(xAxis);
-
-svgClick.append("defs").append("clipPath")
-.attr("id","clip")
-.append("rect")
-.attr("width",width)
-.attr("height",height+500);
-
-
-svgClick.append("g")
-.attr("class", "x axis")
-.attr("transform", "translate(0," + y2(0) + ")")
-.call(xAxis);
-
-svgClick.append("g")
-.attr("class", "x axis")
-.attr("transform", "translate(0," + y3(0) + ")")
-.call(xAxis);
 
 
 function type(d){
@@ -288,8 +213,12 @@ function validate() {
 	experimentr.endTimer('demo');
 	experimentr.release();
 }
-
-
 </script>
+	<div id = 'cat1spd1'>
+		<div id = "test-buttons">
+			<button type ="button" name ="researchButton" id = "button1">Anomaly in graph 1</button>
+		</div>
+	</div>
+
 </body>
 </html>
