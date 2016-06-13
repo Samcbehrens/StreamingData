@@ -113,7 +113,7 @@ io.listen(server).on('connection', function (socket) {
       // console.log('mouse clicked and stuff is being sent away!! ')
       handleCollectedDataPost(msg.postId, msg.timestamp);
     }else{
-      mouseAction.push({'timestamp': msg.timePressed, 'buttonTitle':msg.buttonTitle })
+      mouseAction.push({'timestamp': msg.timePressed, 'interactionType': msg.interactionType, 'buttonTitle':msg.buttonTitle })
       // console.log('click event: ' + msg.buttonTitle + msg.timePressed);
     }
   }); 
