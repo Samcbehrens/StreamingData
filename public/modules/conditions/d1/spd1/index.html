@@ -150,7 +150,8 @@ d3.tsv("data/caseTest1.tsv", type, function(error,data){
 		.transition()
 		.duration(duration)
 		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)");
+		.attr("transform","translate("+x(-1999) + ",0)")
+		.each("end", validate);
 
 
 	})
@@ -173,7 +174,8 @@ d3.tsv("data/caseTest2.tsv", type, function(error,data){
 		.transition()
 		.duration(duration)
 		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)");
+		.attr("transform","translate("+x(-1999) + ",0)")
+		.each("end", validate);
 		//.attr("stroke",st)
 		
 
@@ -197,7 +199,8 @@ d3.tsv("data/caseTest3.tsv", type, function(error,data){
 		.transition()
 		.duration(duration)
 		.ease("linear")
-		.attr("transform","translate("+x(-2000) + ",0)");
+		.attr("transform","translate("+x(-2000) + ",0)")
+		.each("end", validate);;
 
 	})
 
