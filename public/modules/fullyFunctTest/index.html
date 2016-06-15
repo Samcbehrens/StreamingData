@@ -115,9 +115,6 @@ var svgContainer = d3.select("body").append("svg")
 
 
 
-var brush = d3.svg.brush()
-    .x(x)
-    .on("brush", brushed);
 
 var xAxis=d3.svg.axis().scale(x).orient("bottom");
 
@@ -165,24 +162,7 @@ d3.tsv("data/caseTest1.tsv", type, function(error,data){
 		.datum(data)
 		.attr("class","line1")
 		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)");
-
-		var pathCopy = svgClick.append("g")
-		.attr("clip-path","url(#clip2)")
-		.attr("transform","translate(0,0)")
-		.append("path")
-		.datum(data)
-		.attr("class","lineClick1")
-		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)")
-		.style("visibility","hidden");
-
+		
 
 	})
 
@@ -201,25 +181,9 @@ d3.tsv("data/caseTest2.tsv", type, function(error,data){
 		.datum(data)
 		.attr("class","line2")
 		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)");
-		//.attr("stroke",st)
-		
-		var pathCopy = svgClick.append("g")
-		.attr("clip-path","url(#clip2)")
-		.attr("transform","translate(0,0)")
-		//.attr("id","path")
-		.append("path")
-		.datum(data)
-		.attr("class","lineClick2")
-		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)")
-		.style("visibility","hidden");
+	
+	
+	
 
 	})
 
@@ -238,25 +202,7 @@ d3.tsv("data/caseTest3.tsv", type, function(error,data){
 		.datum(data)
 		.attr("class","line3")
 		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-2000) + ",0)");
-
-		var pathCopy = svgClick.append("g")
-		.attr("clip-path","url(#clip2)")
-		.attr("transform","translate(0,0)")
-		//.attr("id","path")
-		.append("path")
-		.datum(data)
-		.attr("class","lineClick3")
-		.attr("d",line)
-		.transition()
-		.duration(duration)
-		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)")
-		.style("visibility","hidden");
-
+		
 	})
 
 
@@ -290,13 +236,6 @@ svgClick.append("g")
 .call(xAxis);
 
 
-svgClick.append("g")
-.attr("class", "x brush")
-.call(brush)
-.selectAll("rect")
-.attr("y", -6)
-.attr("height", height);
-
 function type(d){
 	d.index = +d.index;
 	d.value = +d.value;
@@ -304,16 +243,6 @@ function type(d){
 }
 
 
-
-
-function brushed() {
-	var extent = brush.extent();
-	var rangeExtent = [ extent[0] , extent[1] ]; //convert
-	var rangeWidth  = rangeExtent[1] - rangeExtent[0];
-	console.log('extent of brush' + extent);
-	console.log('rangeExtent'+ rangeExtent);
-	console.log('rangeWidth' + rangeWidth);
-}
 
 function validate() {
 	experimentr.endTimer('demo');
