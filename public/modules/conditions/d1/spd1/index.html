@@ -205,47 +205,19 @@ function checkForAnamoly(){
 
 	var anomolyPresent = false;
 
+
 	var data1 = d3.select(".line1").datum();
 	var data2 = d3.select(".line2").datum();
 	var data3 = d3.select(".line3").datum();
 
-
-	for (var i = currentIndex1; i > currentIndex1-width; i++){
-		
-		console.log('end'+currentIndex1-width);
-		console.log('noise test', i, " indexed   ", data1[i]); 
-
-		console.log('noise test', i, " indexed   ", data1[i].noise)
-
-		if(data1[i].noise == "T"){
-			anomolyPresent = true;
-			console.log('anomoly is present');
-			return anomolyPresent
-		}
-		else{ 
-			anomolyPresent = false;
-			console.log('anomoly is FALSE');
-			return anomolyPresent;
-		}
-	}
-
-	// for (var i = currentIndex2; i < currentIndex2+width; i++){
-	// 	if(data2[i].noise == "T"){
-	// 		anomolyPresent = true;
-	// 		console.log('anomoly is present');
-	// 		return anomolyPresent
-	// 	}
-	// }
-
-	// for (var i = currentIndex3; i < currentIndex3+width; i++){
-	// 	if(data3[i].noise == "T"){
-	// 		anomolyPresent = true;
-	// 		console.log('anomoly is present');
-	// 		return anomolyPresent
-	// 	}
-	// }
-
-	return anomolyPresent;
+	console.log('array length' , data1.length)
+	console.log('max value of all data : ', Math.max.apply(Math,data1.map(function(o){return o.index;})));
+	console.log('beginning index : ',  currentIndex1);
+	console.log('ending index : ', currentIndex1-width);
+	// anomolyPresent = data1.slice(currentIndex1,currentIndex1-width).includes("T")
+	// console.log("value of anomolyPresent is : ", anomolyPresent);
+	// return anomolyPresent;
+	
 }
 
 function type(d){
