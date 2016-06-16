@@ -9,7 +9,7 @@
 
 	<div id = 'cat1spd1'>
 		<div id = "test-buttons">
-			<button type ="button" name ="researchButton" id = "button1">Anomaly in graph 1</button>
+			<button type ="button" name ="researchButton" id = "button1">Anomaly Detected</button>
 		</div>
 	</div>
 
@@ -56,7 +56,7 @@
 		timestamp = new Date().getTime();
 		// console.log('mouse pressed. Socket emit ')
 		postId = 1234
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
+		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent});
 	};
 
 
@@ -66,7 +66,7 @@
 	var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
-	var duration = 200000;
+	var duration = 500;
 
 
 
@@ -194,7 +194,7 @@ function setUp(error, data1, data2, data3){
 			.attr("d",line1)
 			.attr("transform",null)
 			.transition()
-			.duration(500)
+			.duration(duration)
 			.ease("linear")
 			.attr("transform", "translate(" + x(-1) + ",0)")
 		disData1.shift();
@@ -205,7 +205,7 @@ function setUp(error, data1, data2, data3){
 			.attr("d",line2)
 			.attr("transform",null)
 			.transition()
-			.duration(500)
+			.duration(duration)
 			.ease("linear")
 			.attr("transform", "translate(" + x(-1) + ",0)")
 		disData2.shift();
@@ -216,7 +216,7 @@ function setUp(error, data1, data2, data3){
 			.attr("d",line3)
 			.attr("transform",null)
 			.transition()
-			.duration(500)
+			.duration(duration)
 			.ease("linear")
 			.attr("transform", "translate(" + x(-1) + ",0)")
 			.each("end",tick);
@@ -230,12 +230,12 @@ function setUp(error, data1, data2, data3){
 };
 
 
-
 function checkForAnamoly(){
-
 	allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
 	allNoise= allPoints.map(function(a) {return a.noise;});
+	console.log(allNoise);
 	return allNoise.includes("T");
+
 };
 
 function type(d){
